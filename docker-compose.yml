@@ -1,0 +1,53 @@
+version: "3.5"
+services:
+    # notebook
+    notebook:
+        build:
+            context: ./jupyter-notebook-docker 
+        ports: 
+            - ${JUPYTER_NOTEBOOKS_PORT}:${JUPYTER_NOTEBOOKS_PORT} 
+        depends_on: 
+            - mlflow 
+        environment: 
+            MLFLOW_TRACKING_URI: "http://mlflow:5000" 
+        volumes: 
+            - ./notebooks:/notebooks
+    mlflow:
+        build:
+            context: ./ml-flow-docker
+        expose: 
+            - "5000"
+        ports:
+            - "5000:5000"
+        depends_on: 
+            - postgres
+    postgres:
+        build:
+            context: ./postgres-docker
+        restart: always
+        environment:
+            POSTGRES_USER: 'admin'
+            POSTGRES_PASSWORD: 'secret'
+            PGDATA: /data/postgres
+        ports: 
+            - "5432:5432"
+        volumes:
+            - postgres:/data/postgres
+    pgadmin:
+        container_name: pgadmin_container
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+        volumes:
+            - pgadmin:/root/.pgadmin
+    
+        ports:
+            - "${PGADMIN_PORT:-5050}:80"
+        restart: always
+    
+volumes:
+    postgres:
+    notebooks:
+    pgadmin:
