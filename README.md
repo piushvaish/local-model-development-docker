@@ -7,12 +7,6 @@ This is fully ready Docker container with:
 - Sklearn
 - Matplotlib
 - Seaborn
-- pyyaml
-- h5py
-- Jupyter
-- Tensorflow
-- Keras
-- OpenCV 3
 
 It runs on top of [Ubuntu 18.04 Docker container](https://hub.docker.com/_/ubuntu/) ([Dockerfile](https://github.com/imjoseangel/docker-data-science/blob/devel/Dockerfile))
 
@@ -27,7 +21,7 @@ mkdir notebooks
 Run Docker container with the following command:
 
 ```sh
-docker run -it -p 8888:8888 -p 6006:6006 -d -v $(pwd)/notebooks:/notebooks --name datascience imjoseangel/datascience
+docker run -it -p 8888:8888 -p ----needs a change
 ```
 
 **Parameters**:
